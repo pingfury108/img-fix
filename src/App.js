@@ -39,7 +39,7 @@ function VideoDisply({ visible, fname, onTimeUpdateF }) {
 }
 
 function ImgSelect({ onchange }) {
-  return <input type='file' onChange={onchange}></input>;
+  return <input type='file' onChange={onchange} className='w-full'></input>;
 }
 
 function App() {
@@ -76,35 +76,35 @@ function App() {
   };
 
   return (
-    <div className="container mx-auto">
+    <div className="lg:container mx-auto">
       <h2 className="text-3xl font-bold text-center">
         视频提取图片
       </h2>
-      <div className="flex h-screen w-full">
-        <div id="img-disply" className='w-2/3 p-2 border border-1 rounded-lg place-content-center'>
+      <div className="flex lg:h-screen sm:h-full sm:w-screen lg:w-full sm:flex-col lg:flex-row">
+        <div id="img-disply" className='lg:w-2/3 sm:h-2/3 p-2 border border-1 rounded-lg lg:h-full sm:w-full'>
           <VideoDisply visible={noVideo} fname={videoData} onTimeUpdateF={e => {
             setT(secondsToTime(e.target.currentTime))
           }} />
         </div>
-        <div id='option' className='w-1/3 p-2 border border-1 rounded-lg place-content-center'>
+        <div id='option' className='lg:w-1/3 sm:h-1/3 p-2 border border-1 rounded-lg lg:h-full sm:w-full'>
           <div className='h-1/3 border border-1 rounded-lg p-2'>
-            <div className='container grid grid-cols-4 gap-2 pt-1'>
-              <label className='col-span-1'>选择视频</label>
+            <div className='grid grid-cols-5 gap-2 pt-1'>
+              <label className='col-span-2'>选择视频</label>
               <div className='col-span-3'>
                 <ImgSelect onchange={videoChange} />
               </div>
             </div>
-            <div className='container grid grid-cols-4 gap-2 pt-1'>
-              <label className='col-span-1'>提取视频帧位置</label>
+            <div className='grid grid-cols-5 gap-2 pt-1'>
+              <label className='col-span-2'>提取视频帧位置</label>
               <div className='col-span-3'>
                 <input type='text' value={t} onChange={e => {
                   setT(e.target.value)
-                }} className='border border-1 rounded-lg'></input>
+                }} className='w-full border border-1 rounded-lg'></input>
               </div>
             </div>
             <div>
             </div>
-            <div className='container grid grid-cols-4 gap-2 pt-1'>
+            <div className='grid lg:grid-cols-4 gap-2 pt-1'>
               <button className='border border-1 rounded-lg p-2 col-span-1'
                 onClick={_ => {
                   (async () => {
@@ -119,18 +119,19 @@ function App() {
                     setnoImg(false);
                   })();
                 }}>提取为图片</button>
-              <button onClick={e => {
-                const link = document.createElement("a");
-                link.href = imgPath;
-                link.download = `img-fix-${t.replace(":", "_")}.png`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(link.href);
-              }}>下载图片</button>
+              <button className='border border-1 rounded-lg p-2 col-span-1'
+                onClick={_ => {
+                  const link = document.createElement("a");
+                  link.href = imgPath;
+                  link.download = `img-fix-${t.replace(":", "_ ")}.png`;
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                  URL.revokeObjectURL(link.href);
+                }}>下载图片</button>
             </div>
           </div>
-          <div className='h-2/3 border border-1 rounded-lg p-2'>
+          <div id='result' className='h-2/3 border border-1 rounded-lg p-2'>
             <ImgDisply visible={noImg} fname={imgPath} />
           </div>
         </div>
